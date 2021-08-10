@@ -2,19 +2,25 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { useRouter } from "next/dist/client/router";
 import InfoCard from "../components/InfoCard";
+import format from "date-fns/format";
+import Map from "../components/Map";
 
 function Search({ searchResult }) {
   const router = useRouter();
   const { location, startDate, endDate, noOfGuests } = router.query;
 
+  const formattedStartDate = format(new Date(startDate), "dd MMMM yy");
+  const formattedEndDate = format(new Date(endDate), "dd MMMM yy");
+  const range = `${formattedStartDate}- ${formattedEndDate}`;
+
   return (
     <div>
-      <Header placeholder={`${location} | ${noOfGuests} guests`} />
+      <Header placeholder={`${location} | ${range} | ${noOfGuests} guests`} />
 
       <main className="flex">
         <section className="flex-grow pt-14 px-6">
           <p className="text-xs">
-            300+ Stays for {noOfGuests} number of guests
+            300+ Stays -{range} - for {noOfGuests} number of guests
           </p>
 
           <h1 className="text-3xl font-semibold mt-2 mb-6">
@@ -45,6 +51,10 @@ function Search({ searchResult }) {
               )
             )}
           </div>
+        </section>
+
+        <section className="hidden xl:inline-flex xl:min-w-[600px]">
+          <Map />
         </section>
       </main>
 
